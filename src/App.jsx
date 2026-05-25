@@ -23,15 +23,47 @@ export default function App() {
 
     const interval = setInterval(() => {
       setSnake(prev => {
+        if (!prev || prev.length === 0) return prev
+
         const head = {
           x: prev[0].x + dirRef.current.x,
           y: prev[0].y + dirRef.current.y,
         }
-        return [head, ...prev.slice(0, -1)]
+
+        // colisión con bordes
+        if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) {
+          setStatus('over')
+          return prev
+        }
+
+        // colisión con cuerpo
+        if (prev.some(s => s.x === head.x && s.y === head.y)) {
+          setStatus('over')
+          return prev
+        }
+
+        // come la comida?
+        const ateFood = head.x === food.x && head.y === food.y
+
+        if (ateFood) {
+          setScore(s => {
+            const ns = s + 10
+            setBest(b => Math.max(b, ns))
+            return ns
+          })
+          setFood({
+            x: Math.floor(Math.random() * COLS),
+            y: Math.floor(Math.random() * ROWS),
+          })
+          return [head, ...prev] // crece, no se quita la cola
+        }
+
+        return [head, ...prev.slice(0, -1)] // se mueve normal
       })
     }, 200)
+
     return () => clearInterval(interval)
-  }, [status])
+  }, [status, food])
 
   useEffect(() => {
     const handler = (e) => {
@@ -61,7 +93,31 @@ export default function App() {
       <h1>Snake Game</h1>
       <Score score={score} best={best} />
       <Board snake={snake} food={food} />
-      <button onClick={() => setStatus('running')}> Comenzar</button>
+
+      {status === 'idle' && (
+        <button onClick={() => setStatus('running')}>▶ Comenzar</button>
+      )}
+
+      {status === 'running' && (
+        <button onClick={() => setStatus('paused')}>⏸ Pausar</button>
+      )}
+
+      {status === 'paused' && (
+        <button onClick={() => setStatus('running')}>▶ Continuar</button>
+      )}
+
+      {status === 'over' && (
+        <div>
+          <p>Game Over! Puntaje: {score}</p>
+          <button onClick={() => {
+            setSnake([{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }])
+            setFood({ x: 15, y: 10 })
+            setScore(0)
+            dirRef.current = { x: 1, y: 0 }
+            setStatus('running')
+          }}>↺ Reiniciar</button>
+        </div>
+      )}
     </div>
   )
 }
