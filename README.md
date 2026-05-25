@@ -1,16 +1,37 @@
-# React + Vite
+#  Snake Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**README asistido por IA*   
 
-Currently, two official plugins are available:
+Implementación del juego clásico Snake desarrollado con React + Vite.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tecnologías
+- React (JSX, useState, useEffect)
+- Vite
 
-## React Compiler
+## Instalación
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev
+```
 
-## Expanding the ESLint configuration
+Abre http://localhost:5173 en tu navegador.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Cómo jugar
+- Presiona **Jugar** para iniciar
+- Usa las **flechas del teclado** para mover la serpiente
+- Come la comida 🔴 para crecer y sumar **10 puntos**
+- Cada **50 puntos** sube el nivel y la serpiente va más rápido
+- El juego termina si chocas con la pared o con tu propio cuerpo
+
+## Estructura del proyecto
+```
+src/
+├── components/
+│   ├── Board.jsx       # tablero del juego
+│   ├── Food.jsx        # comida
+│   ├── Score.jsx       # puntaje y nivel
+│   ├── Snake.jsx       # serpiente
+│   └── StartScreen.jsx # pantalla de inicio
+└── App.jsx             # contenedor principal y lógica del juego
+```
