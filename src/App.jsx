@@ -3,6 +3,7 @@ import Score from './components/Score.jsx'
 import Board from './components/Board.jsx'
 import StartScreen from './components/StartScreen.jsx'
 
+
 const COLS = 20
 const ROWS = 20
 
@@ -16,11 +17,15 @@ export default function App() {
   const [score, setScore] = useState(0)
   const [best, setBest] = useState(0)
   const [status, setStatus] = useState('idle')
+  const [level, setLevel] = useState(1)
+
 
   const dirRef = useRef({ x: 1, y: 0 })
 
   useEffect(() => {
     if (status !== 'running') return
+
+    const speed = Math.max(80, 200 - (level - 1) * 30)
 
     const interval = setInterval(() => {
       setSnake(prev => {
@@ -43,13 +48,14 @@ export default function App() {
           return prev
         }
 
-        // come la comida?
+        // come la comida?=
         const ateFood = head.x === food.x && head.y === food.y
 
         if (ateFood) {
           setScore(s => {
             const ns = s + 10
             setBest(b => Math.max(b, ns))
+            if (ns % 50 === 0) setLevel(l => l + 1)
             return ns
           })
           setFood({
@@ -61,10 +67,10 @@ export default function App() {
 
         return [head, ...prev.slice(0, -1)] // se mueve normal
       })
-    }, 200)
+    }, speed)
 
     return () => clearInterval(interval)
-  }, [status, food])
+  }, [status, food, level])
 
   useEffect(() => {
     const handler = (e) => {
@@ -99,7 +105,7 @@ export default function App() {
 
       {status !== 'idle' && (
         <>
-          <Score score={score} best={best} />
+          <Score score={score} best={best} level={level} />
           <Board snake={snake} food={food} />
 
           {status === 'running' && (
@@ -117,6 +123,7 @@ export default function App() {
                 setSnake([{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }])
                 setFood({ x: 15, y: 10 })
                 setScore(0)
+                setLevel(1)
                 dirRef.current = { x: 1, y: 0 }
                 setStatus('running')
               }}>↺ Reiniciar</button>
