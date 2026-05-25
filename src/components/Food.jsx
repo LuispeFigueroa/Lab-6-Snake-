@@ -6,8 +6,9 @@ export default function Food({ position, cellSize }) {
             top: position.y * cellSize,
             width: cellSize,
             height: cellSize,
-            backgroundColor: 'red',
+            backgroundColor: '#05ffa1',
             borderRadius: '50%',
+            boxShadow: '0 0 8px #05ffa1',
         }} />
     )
 }

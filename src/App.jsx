@@ -96,8 +96,16 @@ export default function App() {
 
 
   return (
-    <div>
-      <h1>Snake Game</h1>
+    <div style={{ width: '100%', maxWidth: 600, margin: '0 auto' }}>
+      <h1 style={{
+        background: 'linear-gradient(90deg, #ff71ce, #b967ff, #01cdfe)',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        textAlign: 'center',
+        marginBottom: '1rem',
+      }}>
+        SNAKE GAME
+      </h1>
 
       {status === 'idle' && (
         <StartScreen onStart={() => setStatus('running')} />
@@ -109,16 +117,22 @@ export default function App() {
           <Board snake={snake} food={food} />
 
           {status === 'running' && (
-            <button onClick={() => setStatus('paused')}>⏸ Pausar</button>
+            <div style={{ textAlign: 'center', marginTop: 12 }}>
+              <button onClick={() => setStatus('paused')}>⏸ Pausar</button>
+            </div>
           )}
 
           {status === 'paused' && (
-            <button onClick={() => setStatus('running')}>▶ Continuar</button>
+            <div style={{ textAlign: 'center', marginTop: 12 }}>
+              <button onClick={() => setStatus('running')}>▶ Continuar</button>
+            </div>
           )}
 
           {status === 'over' && (
-            <div>
-              <p>Game Over! Puntaje: {score}</p>
+            <div style={{ textAlign: 'center', marginTop: 12 }}>
+              <p style={{ color: '#ff71ce', marginBottom: 16 }}>
+                GAME OVER · PUNTAJE: {score}
+              </p>
               <button onClick={() => {
                 setSnake([{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }])
                 setFood({ x: 15, y: 10 })
@@ -126,7 +140,7 @@ export default function App() {
                 setLevel(1)
                 dirRef.current = { x: 1, y: 0 }
                 setStatus('running')
-              }}>↺ Reiniciar</button>
+              }}>↺ REINICIAR</button>
             </div>
           )}
         </>
