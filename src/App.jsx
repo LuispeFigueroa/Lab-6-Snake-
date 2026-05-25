@@ -33,6 +33,28 @@ export default function App() {
     return () => clearInterval(interval)
   }, [status])
 
+  useEffect(() => {
+    const handler = (e) => {
+      const moves = {
+        ArrowUp: { x: 0, y: -1 },
+        ArrowDown: { x: 0, y: 1 },
+        ArrowLeft: { x: -1, y: 0 },
+        ArrowRight: { x: 1, y: 0 },
+      }
+      if (!moves[e.key]) return
+      e.preventDefault()
+
+      const next = moves[e.key]
+      const cur = dirRef.current
+
+      if (next.x === -cur.x && next.y === -cur.y) return
+
+      dirRef.current = next
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [])
+
 
   return (
     <div>
