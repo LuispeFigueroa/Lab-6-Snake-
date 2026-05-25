@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Score from './components/Score.jsx'
 import Board from './components/Board.jsx'
+import StartScreen from './components/StartScreen.jsx'
 
 const COLS = 20
 const ROWS = 20
@@ -91,32 +92,37 @@ export default function App() {
   return (
     <div>
       <h1>Snake Game</h1>
-      <Score score={score} best={best} />
-      <Board snake={snake} food={food} />
 
       {status === 'idle' && (
-        <button onClick={() => setStatus('running')}>▶ Comenzar</button>
+        <StartScreen onStart={() => setStatus('running')} />
       )}
 
-      {status === 'running' && (
-        <button onClick={() => setStatus('paused')}>⏸ Pausar</button>
-      )}
+      {status !== 'idle' && (
+        <>
+          <Score score={score} best={best} />
+          <Board snake={snake} food={food} />
 
-      {status === 'paused' && (
-        <button onClick={() => setStatus('running')}>▶ Continuar</button>
-      )}
+          {status === 'running' && (
+            <button onClick={() => setStatus('paused')}>⏸ Pausar</button>
+          )}
 
-      {status === 'over' && (
-        <div>
-          <p>Game Over! Puntaje: {score}</p>
-          <button onClick={() => {
-            setSnake([{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }])
-            setFood({ x: 15, y: 10 })
-            setScore(0)
-            dirRef.current = { x: 1, y: 0 }
-            setStatus('running')
-          }}>↺ Reiniciar</button>
-        </div>
+          {status === 'paused' && (
+            <button onClick={() => setStatus('running')}>▶ Continuar</button>
+          )}
+
+          {status === 'over' && (
+            <div>
+              <p>Game Over! Puntaje: {score}</p>
+              <button onClick={() => {
+                setSnake([{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }])
+                setFood({ x: 15, y: 10 })
+                setScore(0)
+                dirRef.current = { x: 1, y: 0 }
+                setStatus('running')
+              }}>↺ Reiniciar</button>
+            </div>
+          )}
+        </>
       )}
     </div>
   )
